@@ -10,22 +10,24 @@ export type User = {
 
 type Props = {
   users: User[];
-  onSort: (column: keyof User) => void;
-  onDelete: (user: User) => void; // ✅ ahora recibe el objeto user
+  onSort: (column: keyof User, direction: "asc" | "desc" | "original") => void;
+  onDelete: (user: User) => void;
 };
 
 export default function UserTable({ users, onSort, onDelete }: Props) {
   const [sortColumn, setSortColumn] = useState<keyof User | null>(null);
-  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
+  const [sortDirection, setSortDirection] = useState<"asc" | "desc" | "original">("original");
 
   const handleSort = (column: keyof User) => {
+    let nextDirection: "asc" | "desc" | "original" = "asc";
+
     if (sortColumn === column) {
-      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
-    } else {
-      setSortColumn(column);
-      setSortDirection("asc");
+      nextDirection = sortDirection === "asc" ? "desc" : sortDirection === "desc" ? "original" : "asc";
     }
-    onSort(column);
+
+    setSortColumn(nextDirection === "original" ? null : column);
+    setSortDirection(nextDirection);
+    onSort(column, nextDirection);
   };
 
   return (
@@ -36,13 +38,13 @@ export default function UserTable({ users, onSort, onDelete }: Props) {
             <tr>
               <th>Foto</th>
               <th onClick={() => handleSort("name")}>
-                Nombre {sortColumn === "name" && (sortDirection === "asc" ? "▲" : "▼")}
+                Nombre {sortColumn === "name" && (sortDirection === "asc" ? "▲" : sortDirection === "desc" ? "▼" : "")}
               </th>
               <th onClick={() => handleSort("surname")}>
-                Apellido {sortColumn === "surname" && (sortDirection === "asc" ? "▲" : "▼")}
+                Apellido {sortColumn === "surname" && (sortDirection === "asc" ? "▲" : sortDirection === "desc" ? "▼" : "")}
               </th>
               <th onClick={() => handleSort("country")}>
-                País {sortColumn === "country" && (sortDirection === "asc" ? "▲" : "▼")}
+                País {sortColumn === "country" && (sortDirection === "asc" ? "▲" : sortDirection === "desc" ? "▼" : "")}
               </th>
               <th>Acciones</th>
             </tr>

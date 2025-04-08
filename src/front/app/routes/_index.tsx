@@ -15,8 +15,24 @@ export default function Index() {
 
   const { users, setUsers, loading, error, restoreUsers } = useUsers();
   const filteredUsers = useFilteredUsers(users, filter);
-  const handleSort = useSortUsers(setUsers);
-
+  const handleSort = (column: keyof User, direction: "asc" | "desc" | "original") => {
+    if (direction === "original") {
+      restoreUsers(); // reinicia la lista original
+      return;
+    }
+  
+    const sorted = [...users].sort((a, b) => {
+      const aVal = a[column]?.toString().toLowerCase() || "";
+      const bVal = b[column]?.toString().toLowerCase() || "";
+  
+      return direction === "asc"
+        ? aVal.localeCompare(bVal)
+        : bVal.localeCompare(aVal);
+    });
+  
+    setUsers(sorted);
+  };
+  
   useEffect(() => {
     if (error) {
       setShowModal(true);
