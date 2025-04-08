@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import '~/css/styles/table.css';
 
 export type User = {
   name: string
