@@ -32,7 +32,7 @@ export default function UserTable({ users, onSort, onDelete }: Props) {
 
   return (
     <div className="user-table-container">
-      <div className="table-responsive">
+      <div className="table-scroll-wrapper">
         <table className="user-table">
           <thead>
             <tr>
