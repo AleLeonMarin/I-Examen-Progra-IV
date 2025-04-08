@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import Modal from "~/components/UI/modal"
+import Modal from "~/components/UI/modal";
+import ConfirmModal from "~/components/UI/confirmModal";
 import UserTable, { User } from "~/components/UserTable";
 import { useUsers } from "~/hooks/useUsers";
 import { useFilteredUsers } from "~/hooks/useFilteredUsers";
@@ -8,6 +9,7 @@ import { useSortUsers } from "~/hooks/useSortUsers";
 export default function Index() {
   const [filter, setFilter] = useState('');
   const [showModal, setShowModal] = useState(false);
+  const [confirmDeleteIndex, setConfirmDeleteIndex] = useState<number | null>(null);
 
   const { users, setUsers, loading, error, restoreUsers } = useUsers();
   const filteredUsers = useFilteredUsers(users, filter);
@@ -19,8 +21,19 @@ export default function Index() {
     }
   }, [error]);
 
-  const handleDelete = (index: number) => {
-    setUsers((prev) => prev.filter((_, i) => i !== index));
+  const requestDelete = (index: number) => {
+    setConfirmDeleteIndex(index); // guardar el usuario a eliminar
+  };
+
+  const confirmDelete = () => {
+    if (confirmDeleteIndex !== null) {
+      setUsers((prev) => prev.filter((_, i) => i !== confirmDeleteIndex));
+      setConfirmDeleteIndex(null); // limpiar estado
+    }
+  };
+
+  const cancelDelete = () => {
+    setConfirmDeleteIndex(null); // cerrar sin eliminar
   };
 
   const handleRestore = () => {
@@ -55,13 +68,20 @@ export default function Index() {
       <UserTable
         users={filteredUsers}
         onSort={handleSort}
-        onDelete={handleDelete}
+        onDelete={requestDelete}
       />
 
       <Modal
-      isOpen={showModal}
-      message={`Ocurrió un error al cargar los usuarios: ${error}`}
-      onClose={() => setShowModal(false)}
+        isOpen={showModal}
+        message={`Ocurrió un error al cargar los usuarios: ${error}`}
+        onClose={() => setShowModal(false)}
+      />
+
+      <ConfirmModal
+        isOpen={confirmDeleteIndex !== null}
+        message="¿Estás seguro que deseas eliminar este usuario?"
+        onConfirm={confirmDelete}
+        onCancel={cancelDelete}
       />
     </div>
   );
