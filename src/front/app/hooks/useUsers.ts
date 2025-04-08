@@ -1,16 +1,17 @@
-import { useEffect, useState } from 'react';
-import { User } from '~/components/UserTable';
+import { useEffect, useState } from "react";
+import { User } from "~/components/UserTable";
 
 export function useUsers() {
+  const API_URL = import.meta.env.VITE_FLASK_API_URL;
   const [originalUsers, setOriginalUsers] = useState<User[]>([]);
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/users')
+    fetch(`${API_URL}/users`)
       .then((res) => {
-        if (!res.ok) throw new Error('Error al obtener usuarios');
+        if (!res.ok) throw new Error("Error al obtener usuarios");
         return res.json();
       })
       .then((data) => {
