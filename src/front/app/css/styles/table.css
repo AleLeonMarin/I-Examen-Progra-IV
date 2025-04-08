@@ -333,4 +333,9 @@
   100% { content: ''; }
 }
 
-
+.table-scroll-wrapper {
+  max-height: 500px;
+  overflow-y: auto;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+}
