@@ -19,7 +19,13 @@ export default function Index() {
     setFilter('');
   };
 
-  if (loading) return <p>Cargando usuarios...</p>;
+  if (loading) {
+    return (
+      <div className="loading-container">
+        Cargando usuarios<span className="dots" />
+      </div>
+    );
+  }
   if (error) return <p>Error: {error}</p>;
 
   return (
