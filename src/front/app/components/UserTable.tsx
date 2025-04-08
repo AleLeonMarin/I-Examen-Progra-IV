@@ -29,6 +29,8 @@ export default function UserTable({ users, onSort, onDelete }: Props) {
   };
 
   return (
+  <div className="user-table-container">
+    <div className="table-scroll-wrapper">
     <table className="user-table">
       <thead>
         <tr>
@@ -71,7 +73,7 @@ export default function UserTable({ users, onSort, onDelete }: Props) {
               <td>{user.country || "-"}</td>
               <td>
                 <button className="delete-button" onClick={() => onDelete(i)}>
-                  🗑️ Eliminar
+                  Eliminar
                 </button>
               </td>
             </tr>
@@ -79,5 +81,7 @@ export default function UserTable({ users, onSort, onDelete }: Props) {
         )}
       </tbody>
     </table>
+    </div>
+  </div>
   );
 }
