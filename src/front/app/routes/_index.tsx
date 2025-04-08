@@ -1,4 +1,5 @@
-"use client"
+"use client";
+
 import { useEffect, useState } from "react";
 import Modal from "~/components/UI/modal";
 import ConfirmModal from "~/components/UI/confirmModal";
@@ -9,11 +10,12 @@ import { useSortUsers } from "~/hooks/useSortUsers";
 
 export default function Index() {
   const [showModal, setShowModal] = useState(false);
-  const [confirmDeleteIndex, setConfirmDeleteIndex] = useState<number | null>(null);
-  const [filter, setFilter] = useState("")
-  const { users, setUsers, loading, error, restoreUsers } = useUsers()
-  const filteredUsers = useFilteredUsers(users, filter)
-  const handleSort = useSortUsers(setUsers)
+  const [userToDelete, setUserToDelete] = useState<User | null>(null);
+  const [filter, setFilter] = useState("");
+
+  const { users, setUsers, loading, error, restoreUsers } = useUsers();
+  const filteredUsers = useFilteredUsers(users, filter);
+  const handleSort = useSortUsers(setUsers);
 
   useEffect(() => {
     if (error) {
@@ -21,20 +23,20 @@ export default function Index() {
     }
   }, [error]);
 
-  const requestDelete = (index: number) => {
-    setConfirmDeleteIndex(index); // guardar el usuario a eliminar
+  const requestDelete = (user: User) => {
+    setUserToDelete(user);
   };
 
   const confirmDelete = () => {
-    if (confirmDeleteIndex !== null) {
-      setUsers((prev) => prev.filter((_, i) => i !== confirmDeleteIndex))
-      setConfirmDeleteIndex(null); // limpiar estado
+    if (userToDelete) {
+      setUsers((prev) => prev.filter((u) => u !== userToDelete));
+      setUserToDelete(null);
     }
   };
 
   const cancelDelete = () => {
-    setConfirmDeleteIndex(null); // cerrar sin eliminar
-  }
+    setUserToDelete(null);
+  };
 
   const handleRestore = () => {
     restoreUsers();
@@ -100,6 +102,7 @@ export default function Index() {
           </button>
         </div>
       </div>
+
       <UserTable
         users={filteredUsers}
         onSort={handleSort}
@@ -113,11 +116,11 @@ export default function Index() {
       />
 
       <ConfirmModal
-        isOpen={confirmDeleteIndex !== null}
+        isOpen={userToDelete !== null}
         message="¿Estás seguro que deseas eliminar este usuario?"
         onConfirm={confirmDelete}
         onCancel={cancelDelete}
       />
     </div>
-  )
+  );
 }
