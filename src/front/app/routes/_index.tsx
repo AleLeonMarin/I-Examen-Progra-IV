@@ -1,14 +1,23 @@
-import { useState } from 'react';
-import UserTable, { User } from '~/components/UserTable';
-import { useUsers } from '~/hooks/useUsers';
-import { useFilteredUsers } from '~/hooks/useFilteredUsers';
-import { useSortUsers } from '~/hooks/useSortUsers';
+import { useEffect, useState } from "react";
+import Modal from "~/components/UI/modal"
+import UserTable, { User } from "~/components/UserTable";
+import { useUsers } from "~/hooks/useUsers";
+import { useFilteredUsers } from "~/hooks/useFilteredUsers";
+import { useSortUsers } from "~/hooks/useSortUsers";
 
 export default function Index() {
   const [filter, setFilter] = useState('');
+  const [showModal, setShowModal] = useState(false);
+
   const { users, setUsers, loading, error, restoreUsers } = useUsers();
   const filteredUsers = useFilteredUsers(users, filter);
   const handleSort = useSortUsers(setUsers);
+
+  useEffect(() => {
+    if (error) {
+      setShowModal(true);
+    }
+  }, [error]);
 
   const handleDelete = (index: number) => {
     setUsers((prev) => prev.filter((_, i) => i !== index));
@@ -26,7 +35,6 @@ export default function Index() {
       </div>
     );
   }
-  if (error) return <p>Error: {error}</p>;
 
   return (
     <div>
@@ -48,6 +56,12 @@ export default function Index() {
         users={filteredUsers}
         onSort={handleSort}
         onDelete={handleDelete}
+      />
+
+      <Modal
+      isOpen={showModal}
+      message={`Ocurrió un error al cargar los usuarios: ${error}`}
+      onClose={() => setShowModal(false)}
       />
     </div>
   );
