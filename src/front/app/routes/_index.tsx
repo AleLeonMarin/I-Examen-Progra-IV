@@ -1,54 +1,22 @@
-import { useEffect, useState, useMemo, useCallback } from 'react';
+import { useState } from 'react';
 import UserTable, { User } from '~/components/UserTable';
+import { useUsers } from '~/hooks/useUsers';
+import { useFilteredUsers } from '~/hooks/useFilteredUsers';
+import { useSortUsers } from '~/hooks/useSortUsers';
 
 export default function Index() {
-  const [originalUsers, setOriginalUsers] = useState<User[]>([]);
-  const [users, setUsers] = useState<User[]>([]);
   const [filter, setFilter] = useState('');
-  const [sortBy, setSortBy] = useState<keyof User>('country');
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const { users, setUsers, loading, error, restoreUsers } = useUsers();
+  const filteredUsers = useFilteredUsers(users, filter);
+  const handleSort = useSortUsers(setUsers);
 
-  // Cargar datos
-  useEffect(() => {
-    fetch('http://localhost:5000/api/users')
-      .then((res) => {
-        if (!res.ok) throw new Error('Error al obtener usuarios');
-        return res.json();
-      })
-      .then((data) => {
-        setOriginalUsers(data);
-        setUsers(data);
-      })
-      .catch((err) => setError(err.message))
-      .finally(() => setLoading(false));
-  }, []);
-
-  // Ordenar
-  const handleSort = useCallback((column: keyof User) => {
-    setUsers((prev) =>
-      [...prev].sort((a, b) => a[column].localeCompare(b[column]))
-    );
-    setSortBy(column);
-  }, []);
-
-  // Filtrar
-  const filteredUsers = useMemo(() => {
-    return users.filter((u) =>
-      u.country.toLowerCase().startsWith(filter.toLowerCase())
-    );
-  }, [users, filter]);
-
-  // Eliminar
-  const handleDelete = useCallback((index: number) => {
+  const handleDelete = (index: number) => {
     setUsers((prev) => prev.filter((_, i) => i !== index));
-  }, []);
+  };
 
-  // Restaurar
   const handleRestore = () => {
-    setUsers(originalUsers);
+    restoreUsers();
     setFilter('');
-    setSortBy('country');
   };
 
   if (loading) return <p>Cargando usuarios...</p>;
