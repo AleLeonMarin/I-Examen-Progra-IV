@@ -1,5 +1,5 @@
-import React from "react";
-import "~/css/styles/confirmModal.css"; // <-- asegurate de que esté bien la ruta
+import React, { useEffect, useRef } from "react";
+import "~/css/styles/confirmModal.css";
 
 interface ConfirmModalProps {
   message: string;
@@ -14,6 +14,14 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
   onConfirm,
   onCancel,
 }) => {
+  const confirmButtonRef = useRef<HTMLButtonElement>(null); // Referencia al botón de confirmar
+
+  useEffect(() => {
+    if (isOpen && confirmButtonRef.current) {
+      confirmButtonRef.current.focus(); // Enfocar el botón cuando el modal esté abierto
+    }
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   return (
@@ -25,7 +33,11 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
           <button onClick={onCancel} className="cancel-button">
             Cancelar
           </button>
-          <button onClick={onConfirm} className="confirm-button">
+          <button
+            ref={confirmButtonRef} // Asignar la referencia al botón de confirmar
+            onClick={onConfirm}
+            className="confirm-button"
+          >
             Confirmar
           </button>
         </div>

@@ -36,17 +36,35 @@ export default function UserTable({ users, onSort, onDelete }: Props) {
         <table className="user-table">
           <thead>
             <tr>
-              <th>Foto</th>
-              <th onClick={() => handleSort("name")}>
+              <th style={{
+                position: "sticky",
+                top: "0",
+              }}
+              >Foto</th>
+              <th style={{
+                position: "sticky",
+                top: "0",
+              }}
+               onClick={() => handleSort("name")}>
                 Nombre {sortColumn === "name" && (sortDirection === "asc" ? "▲" : sortDirection === "desc" ? "▼" : "")}
               </th>
-              <th onClick={() => handleSort("surname")}>
+              <th style={{
+                position: "sticky",
+                top: "0",
+              }} onClick={() => handleSort("surname")}>
                 Apellido {sortColumn === "surname" && (sortDirection === "asc" ? "▲" : sortDirection === "desc" ? "▼" : "")}
               </th>
-              <th onClick={() => handleSort("country")}>
+              <th style={{
+                position: "sticky",
+                top: "0",
+              }}
+              onClick={() => handleSort("country")}>
                 País {sortColumn === "country" && (sortDirection === "asc" ? "▲" : sortDirection === "desc" ? "▼" : "")}
               </th>
-              <th>Acciones</th>
+              <th style={{
+                position: "sticky",
+                top: "0",
+              }}>Acciones</th>
             </tr>
           </thead>
           <tbody>
@@ -59,7 +77,7 @@ export default function UserTable({ users, onSort, onDelete }: Props) {
                 <tr key={i}>
                   <td>
                     <img
-                      src={user.photo || "/placeholder.svg"}
+                      src={user.photo || ""}
                       alt="foto"
                       width={50}
                       onError={(e) => {

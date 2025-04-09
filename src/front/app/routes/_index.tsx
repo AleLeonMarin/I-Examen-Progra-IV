@@ -6,33 +6,35 @@ import ConfirmModal from "~/components/UI/confirmModal";
 import UserTable, { User } from "~/components/UserTable";
 import { useUsers } from "~/hooks/useUsers";
 import { useFilteredUsers } from "~/hooks/useFilteredUsers";
-import { useSortUsers } from "~/hooks/useSortUsers";
+
 
 export default function Index() {
   const [showModal, setShowModal] = useState(false);
   const [userToDelete, setUserToDelete] = useState<User | null>(null);
   const [filter, setFilter] = useState("");
+  const [showRestoreConfirm, setShowRestoreConfirm] = useState(false);
 
   const { users, setUsers, loading, error, restoreUsers } = useUsers();
   const filteredUsers = useFilteredUsers(users, filter);
+
   const handleSort = (column: keyof User, direction: "asc" | "desc" | "original") => {
     if (direction === "original") {
-      restoreUsers(); // reinicia la lista original
+      restoreUsers();
       return;
     }
-  
+
     const sorted = [...users].sort((a, b) => {
       const aVal = a[column]?.toString().toLowerCase() || "";
       const bVal = b[column]?.toString().toLowerCase() || "";
-  
+
       return direction === "asc"
         ? aVal.localeCompare(bVal)
         : bVal.localeCompare(aVal);
     });
-  
+
     setUsers(sorted);
   };
-  
+
   useEffect(() => {
     if (error) {
       setShowModal(true);
@@ -55,13 +57,22 @@ export default function Index() {
   };
 
   const handleRestore = () => {
-    restoreUsers();
-    setFilter('');
+    setShowRestoreConfirm(true);
+  };
+
+  const confirmRestore = () => {
+    restoreUsers(); 
+    setFilter("");
+    setShowRestoreConfirm(false);
+  };
+
+  const cancelRestore = () => {
+    setShowRestoreConfirm(false);
   };
 
   if (loading) {
     return (
-      <div className="loading-container">
+      <div style={{ textAlign: "center", fontSize: "18px", marginTop: "20px" }}>
         Cargando usuarios<span className="dots" />
       </div>
     );
@@ -69,13 +80,11 @@ export default function Index() {
 
   return (
     <div className="page-container">
-      <div className="page-header">
-        <h1>Lista de Usuarios</h1>
-
-        <div className="filter-container">
-          <div className="search-input-wrapper">
+      <div style={{ padding: "20px", borderBottom: "1px solid #ccc" }}>
+        <h1 style={{ fontSize: "24px", fontWeight: "bold" }}>Lista de Usuarios</h1>
+        <div style={{ marginTop: "10px", display: "flex", alignItems: "center", gap: "10px" }}>
+          <div style={{ position: "relative", flex: "1" }}>
             <svg
-              className="search-icon"
               viewBox="0 0 24 24"
               width="16"
               height="16"
@@ -84,6 +93,13 @@ export default function Index() {
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
+              style={{
+                position: "absolute",
+                top: "50%",
+                right: "0px",
+                transform: "translateY(-50%)",
+                pointerEvents: "none",
+              }}
             >
               <circle cx="11" cy="11" r="8"></circle>
               <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
@@ -93,13 +109,30 @@ export default function Index() {
               placeholder="Filtrar por país"
               value={filter}
               onChange={(e) => setFilter(e.target.value)}
-              className="search-input"
+              style={{
+                padding: "8px 8px 8px 10px",
+                border: "1px solid #ccc",
+                borderRadius: "4px",
+                width: "100%",
+              }}
             />
           </div>
 
-          <button className="restore-button" onClick={handleRestore} title="Restaurar usuarios">
+          <button
+            style={{
+              padding: "8px 16px",
+              backgroundColor: "#007bff",
+              color: "#fff",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              gap: "5px",
+            }}
+            onClick={handleRestore}
+          >
             <svg
-              className="restore-icon"
               viewBox="0 0 24 24"
               width="16"
               height="16"
@@ -111,10 +144,10 @@ export default function Index() {
             >
               <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
               <path d="M3 3v5h5"></path>
-              <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"></path>
+              <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0-6.74-2.74L21 16"></path>
               <path d="M16 21h5v-5"></path>
             </svg>
-            <span className="button-text">Restaurar</span>
+            <span>Restaurar</span>
           </button>
         </div>
       </div>
@@ -136,6 +169,13 @@ export default function Index() {
         message="¿Estás seguro que deseas eliminar este usuario?"
         onConfirm={confirmDelete}
         onCancel={cancelDelete}
+      />
+
+      <ConfirmModal
+        isOpen={showRestoreConfirm}
+        message="¿Estás seguro que deseas restaurar la tabla al estado original?"
+        onConfirm={confirmRestore}
+        onCancel={cancelRestore} 
       />
     </div>
   );
