@@ -58,7 +58,7 @@ cd I-Examen-Progra-IV
 
 1. Navega al directorio del frontend:
    ```bash
-   cd ../front
+   cd src/front
    ```
 2. Instala las dependencias necesarias con npm:
    ```bash
