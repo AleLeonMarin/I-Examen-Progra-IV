@@ -7,6 +7,7 @@ import UserTable, { User } from "~/components/UserTable";
 import { useUsers } from "~/hooks/useUsers";
 import { useFilteredUsers } from "~/hooks/useFilteredUsers";
 
+
 export default function Index() {
   const [showModal, setShowModal] = useState(false);
   const [userToDelete, setUserToDelete] = useState<User | null>(null);
@@ -60,7 +61,7 @@ export default function Index() {
   };
 
   const confirmRestore = () => {
-    restoreUsers();
+    restoreUsers(); 
     setFilter("");
     setShowRestoreConfirm(false);
   };
@@ -72,7 +73,7 @@ export default function Index() {
   if (loading) {
     return (
       <div style={{ textAlign: "center", fontSize: "18px", marginTop: "20px" }}>
-        Loading users<span className="dots" />
+        Cargando usuarios<span className="dots" />
       </div>
     );
   }
@@ -80,7 +81,7 @@ export default function Index() {
   return (
     <div className="page-container">
       <div style={{ padding: "20px", borderBottom: "1px solid #ccc" }}>
-        <h1 style={{ fontSize: "24px", fontWeight: "bold" }}>User List</h1>
+        <h1 style={{ fontSize: "24px", fontWeight: "bold" }}>Lista de Usuarios</h1>
         <div style={{ marginTop: "10px", display: "flex", alignItems: "center", gap: "10px" }}>
           <div style={{ position: "relative", flex: "1" }}>
             <svg
@@ -105,7 +106,7 @@ export default function Index() {
             </svg>
             <input
               type="text"
-              placeholder="Filter by country"
+              placeholder="Filtrar por país"
               value={filter}
               onChange={(e) => setFilter(e.target.value)}
               style={{
@@ -146,7 +147,7 @@ export default function Index() {
               <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0-6.74-2.74L21 16"></path>
               <path d="M16 21h5v-5"></path>
             </svg>
-            <span>Restore</span>
+            <span>Restaurar</span>
           </button>
         </div>
       </div>
@@ -159,22 +160,22 @@ export default function Index() {
 
       <Modal
         isOpen={showModal}
-        message={`An error occurred while loading users: ${error}`}
+        message={`Ocurrió un error al cargar los usuarios: ${error}`}
         onClose={() => setShowModal(false)}
       />
 
       <ConfirmModal
         isOpen={userToDelete !== null}
-        message="Are you sure you want to delete this user?"
+        message="¿Estás seguro que deseas eliminar este usuario?"
         onConfirm={confirmDelete}
         onCancel={cancelDelete}
       />
 
       <ConfirmModal
         isOpen={showRestoreConfirm}
-        message="Are you sure you want to restore the table to its original state?"
+        message="¿Estás seguro que deseas restaurar la tabla al estado original?"
         onConfirm={confirmRestore}
-        onCancel={cancelRestore}
+        onCancel={cancelRestore} 
       />
     </div>
   );
