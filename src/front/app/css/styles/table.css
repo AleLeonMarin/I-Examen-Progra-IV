@@ -15,7 +15,6 @@
   --transition: all 0.2s ease;
 }
 
-/* Page layout */
 .page-container {
   max-width: 1200px;
   margin: 0 auto;
@@ -44,7 +43,6 @@
   margin: 0;
 }
 
-/* Filter and search */
 .filter-container {
   display: flex;
   flex-direction: column;
@@ -132,7 +130,6 @@
   }
 }
 
-/* User table */
 .user-table-container {
   background-color: var(--background-white);
   border-radius: var(--radius);
@@ -344,13 +341,13 @@
 }
 
 .user-table tbody tr:nth-child(odd) {
-  background-color: var(--background-white); /* Blanco */
+  background-color: var(--background-white);
 }
 
 .user-table tbody tr:nth-child(even) {
-  background-color: var(--background-light); /* Gris claro */
+  background-color: var(--background-light);
 }
 
 .user-table tbody tr:hover {
-  background-color: #e0e7ff; /* Un azul claro suave */
+  background-color: #e0e7ff;
 }

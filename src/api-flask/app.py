@@ -16,7 +16,6 @@ def generate_user():
         "photo": f"https://randomuser.me/api/portraits/{random.choice(['men', 'women'])}/{random.randint(1, 99)}.jpg"
     }
 
-    # Simular datos incompletos en 20% de los usuarios
     if random.random() < 0.2:
         field_to_remove = random.choice(list(user.keys()))
         del user[field_to_remove]

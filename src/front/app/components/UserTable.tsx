@@ -40,37 +40,37 @@ export default function UserTable({ users, onSort, onDelete }: Props) {
                 position: "sticky",
                 top: "0",
               }}
-              >Foto</th>
+              >Photo</th>
               <th style={{
                 position: "sticky",
                 top: "0",
               }}
                onClick={() => handleSort("name")}>
-                Nombre {sortColumn === "name" && (sortDirection === "asc" ? "▲" : sortDirection === "desc" ? "▼" : "")}
+                Name {sortColumn === "name" && (sortDirection === "asc" ? "▲" : sortDirection === "desc" ? "▼" : "")}
               </th>
               <th style={{
                 position: "sticky",
                 top: "0",
               }} onClick={() => handleSort("surname")}>
-                Apellido {sortColumn === "surname" && (sortDirection === "asc" ? "▲" : sortDirection === "desc" ? "▼" : "")}
+                Surname {sortColumn === "surname" && (sortDirection === "asc" ? "▲" : sortDirection === "desc" ? "▼" : "")}
               </th>
               <th style={{
                 position: "sticky",
                 top: "0",
               }}
               onClick={() => handleSort("country")}>
-                País {sortColumn === "country" && (sortDirection === "asc" ? "▲" : sortDirection === "desc" ? "▼" : "")}
+                Country {sortColumn === "country" && (sortDirection === "asc" ? "▲" : sortDirection === "desc" ? "▼" : "")}
               </th>
               <th style={{
                 position: "sticky",
                 top: "0",
-              }}>Acciones</th>
+              }}>Actions</th>
             </tr>
           </thead>
           <tbody>
             {users.length === 0 ? (
               <tr>
-                <td colSpan={5} className="empty-message">No se encontraron usuarios</td>
+                <td colSpan={5} className="empty-message">No users found</td>
               </tr>
             ) : (
               users.map((user, i) => (
@@ -78,7 +78,7 @@ export default function UserTable({ users, onSort, onDelete }: Props) {
                   <td>
                     <img
                       src={user.photo || ""}
-                      alt="foto"
+                      alt="photo"
                       width={50}
                       onError={(e) => {
                         const target = e.target as HTMLImageElement;
@@ -93,7 +93,7 @@ export default function UserTable({ users, onSort, onDelete }: Props) {
                   <td>{user.country || "-"}</td>
                   <td>
                     <button className="delete-button" onClick={() => onDelete(user)}>
-                      Eliminar
+                      Delete
                     </button>
                   </td>
                 </tr>
