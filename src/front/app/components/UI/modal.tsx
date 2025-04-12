@@ -16,7 +16,7 @@ const Modal: React.FC<ModalProps> = ({ message, isOpen, onClose }) => {
         <div className="modal-icon">ℹ️</div>
         <p className="modal-message">{message}</p>
         <button onClick={onClose} className="modal-button">
-          Cerrar
+          Close
         </button>
       </div>
     </div>

@@ -14,11 +14,11 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
   onConfirm,
   onCancel,
 }) => {
-  const confirmButtonRef = useRef<HTMLButtonElement>(null); // Referencia al botón de confirmar
+  const confirmButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     if (isOpen && confirmButtonRef.current) {
-      confirmButtonRef.current.focus(); // Enfocar el botón cuando el modal esté abierto
+      confirmButtonRef.current.focus();
     }
   }, [isOpen]);
 
@@ -31,14 +31,14 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
         <p className="confirm-modal-message">{message}</p>
         <div className="confirm-modal-buttons">
           <button onClick={onCancel} className="cancel-button">
-            Cancelar
+            Cancel
           </button>
           <button
-            ref={confirmButtonRef} // Asignar la referencia al botón de confirmar
+            ref={confirmButtonRef}
             onClick={onConfirm}
             className="confirm-button"
           >
-            Confirmar
+            Confirm
           </button>
         </div>
       </div>
